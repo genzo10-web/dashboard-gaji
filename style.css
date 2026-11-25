@@ -1,0 +1,225 @@
+:root {
+  --bg-page: #f1f5f9;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --income: #16a34a;
+  --expense: #dc2626;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: 2rem;
+}
+
+/* Header dengan Gradien Modern */
+.topbar {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  color: #ffffff;
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.topbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.topbar h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+.subtitle { color: #cbd5e1; font-size: 0.88rem; margin-top: 0.15rem; }
+
+.header-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-actions select,
+.header-actions input {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  min-height: 40px;
+}
+
+.header-actions select option {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.header-actions input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Kartu KPI dengan Aksen Atas */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.35rem;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-top: 4px solid #94a3b8;
+}
+
+.kpi:hover { transform: translateY(-2px); }
+.kpi-income { border-top-color: var(--income); }
+.kpi-expense { border-top-color: var(--expense); }
+.kpi-balance { border-top-color: var(--primary); }
+.kpi-rate { border-top-color: #8b5cf6; }
+
+.kpi-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+.income { color: var(--income); }
+.expense { color: var(--expense); }
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+}
+
+.card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.1rem; color: #0f172a; }
+
+.form-stack { display: flex; flex-direction: column; gap: 0.95rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+label { font-size: 0.83rem; font-weight: 600; color: #334155; }
+
+input, select {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  background: #f8fafc;
+  color: var(--text-main);
+  min-height: 42px;
+  transition: all 0.15s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.92rem;
+  min-height: 42px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+button:active { transform: scale(0.98); }
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  margin-top: 0.25rem;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-secondary {
+  background: #ffffff;
+  color: #0f172a;
+}
+.btn-secondary:hover { background: #f1f5f9; }
+
+.btn-delete {
+  background: #fee2e2;
+  color: var(--expense);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  min-height: 32px;
+}
+.btn-delete:hover { background: #fecaca; }
+
+/* Pill Badge untuk Pemilik & Status */
+.pill {
+  display: inline-block;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill-gigih { background: #dbeafe; color: #1e40af; }
+.pill-pasangan { background: #fce7f3; color: #9d174d; }
+.pill-bersama { background: #fef3c7; color: #92400e; }
+.pill-in { background: #dcfce7; color: #166534; }
+.pill-out { background: #fee2e2; color: #991b1b; }
+
+.chart-wrapper { position: relative; height: 290px; width: 100%; }
+.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
+.badge { background: #e2e8f0; color: #334155; padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 680px; }
+th, td { padding: 0.8rem 0.75rem; border-bottom: 1px solid var(--border-color); text-align: left; }
+th { background: #f8fafc; font-weight: 600; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+tbody tr:hover { background: #f8fafc; }
+.text-right { text-align: right; font-weight: 600; }
+.text-center { text-align: center; }
+
+/* Optimasi Responsif Layar Tablet & HP */
+@media (max-width: 860px) {
+  .workspace-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 0 0.85rem; gap: 1rem; }
+  .card { padding: 1rem; }
+  .header-actions { width: 100%; }
+  .header-actions select,
+  .header-actions input,
+  .header-actions button { flex: 1 1 auto; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .kpi-value { font-size: 1.15rem; }
+  .form-row { grid-template-columns: 1fr; gap: 0.75rem; }
+}
