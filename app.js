@@ -8,12 +8,7 @@ import {
   update
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// Konfigurasi Firebase Proyek keuangan-bersama-8abcb
 const firebaseConfig = {
   apiKey: "AIzaSyCIp7k54mYvcwu-LjEEVbv52zZNSmsQezU",
   authDomain: "keuangan-bersama-8abcb.firebaseapp.com",
@@ -23,19 +18,6 @@ const firebaseConfig = {
   messagingSenderId: "908143622931",
   appId: "1:908143622931:web:97465434421453a65c38e6"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const firebaseConfig = {
-  apiKey: "GANTI_DENGAN_API_KEY_ANDA",
-  authDomain: "GANTI_DENGAN_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://GANTI_DENGAN_DATABASE_URL_ANDA.firebasedatabase.app",
-  projectId: "GANTI_DENGAN_PROJECT_ID",
-  storageBucket: "GANTI_DENGAN_PROJECT_ID.firebasestorage.app",
-  messagingSenderId: "GANTI_DENGAN_SENDER_ID",
-  appId: "GANTI_DENGAN_APP_ID"
-};
-// =========================================================================
 
 const LEGACY_STORAGE_KEY = "SALARY_CASHFLOW_DB_V1";
 const ROOM_PIN_STORAGE_KEY = "SHARED_FINANCE_ROOM_PIN";
@@ -50,7 +32,6 @@ let unsubscribeListener = null;
 const roomGateSection = document.getElementById("roomGateSection");
 const dashboardMain = document.getElementById("dashboardMain");
 const syncStatusBadge = document.getElementById("syncStatusBadge");
-const configWarning = document.getElementById("configWarning");
 
 const roomForm = document.getElementById("roomForm");
 const inputRoomCode = document.getElementById("inputRoomCode");
@@ -69,18 +50,9 @@ const profileProgressGrid = document.getElementById("profileProgressGrid");
 const incomeTableBody = document.getElementById("incomeTableBody");
 const expenseTableBody = document.getElementById("expenseTableBody");
 
-// Cek apakah firebaseConfig sudah diisi oleh pengguna
-const isFirebaseConfigured =
-  firebaseConfig.apiKey !== "GANTI_DENGAN_API_KEY_ANDA" &&
-  firebaseConfig.databaseURL.startsWith("https://");
-
-let db = null;
-if (isFirebaseConfigured) {
-  const app = initializeApp(firebaseConfig);
-  db = getDatabase(app);
-} else {
-  configWarning.classList.remove("hidden");
-}
+// Inisialisasi Firebase Realtime Database
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const formatIDR = (number) => {
   return new Intl.NumberFormat("id-ID", {
@@ -119,7 +91,6 @@ const getProfileBorderClass = (owner) => {
   return "border-gigih";
 };
 
-// Cek apakah masih ada data lama di localStorage untuk ditawari pindah ke Cloud
 const checkLegacyData = () => {
   const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!legacyRaw) return;
@@ -135,11 +106,6 @@ const checkLegacyData = () => {
 
 // Hubungkan Listener Real-Time ke Firebase
 const connectToRoom = (pin) => {
-  if (!isFirebaseConfigured || !db) {
-    alert("Isi dulu firebaseConfig di file app.js sebelum menghubungkan ruang.");
-    return;
-  }
-
   const cleanPin = sanitizeRoomCode(pin);
   if (cleanPin.length < 6) {
     alert("Kode Ruang harus minimal 6 karakter (huruf, angka, atau tanda hubung).");
@@ -176,7 +142,7 @@ const connectToRoom = (pin) => {
       console.error("Firebase Sync Error:", error);
       syncStatusBadge.textContent = "Gagal Terhubung";
       syncStatusBadge.className = "sync-badge sync-offline";
-      alert("Gagal menyinkronkan ke Firebase. Pastikan databaseURL dan Rules sudah benar.");
+      alert("Gagal menyinkronkan ke Firebase. Pastikan tab Rules di Realtime Database sudah di-Publish.");
     }
   );
 };
@@ -430,7 +396,6 @@ const renderDashboard = () => {
   renderExpenseChart(expenseList);
 };
 
-// Simpan Transaksi ke Cloud Firebase
 const saveTransactionToCloud = async (txnObj) => {
   if (!db || !currentRoomPin) return;
   const itemRef = ref(db, `rooms/${currentRoomPin}/transactions/${txnObj.id}`);
@@ -487,7 +452,6 @@ const deleteTransaction = async (id) => {
   await remove(itemRef);
 };
 
-// Event Form Kode Ruang
 roomForm.addEventListener("submit", (event) => {
   event.preventDefault();
   connectToRoom(inputRoomCode.value);
@@ -503,7 +467,6 @@ btnChangeRoom.addEventListener("click", () => {
   syncStatusBadge.className = "sync-badge sync-offline";
 });
 
-// Migrasi Data Lama dari localStorage ke Firebase
 btnMigrateData.addEventListener("click", async () => {
   const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!legacyRaw || !db || !currentRoomPin) return;
@@ -560,8 +523,7 @@ document.getElementById("btnExportCsv").addEventListener("click", () => {
 filterMonthInput.addEventListener("change", renderDashboard);
 filterOwnerInput.addEventListener("change", renderDashboard);
 
-// Inisialisasi Aplikasi
 initDefaultDates();
-if (currentRoomPin && isFirebaseConfigured) {
+if (currentRoomPin) {
   connectToRoom(currentRoomPin);
 }
