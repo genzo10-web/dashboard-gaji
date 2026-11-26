@@ -27,6 +27,12 @@ const saveState = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
 };
 
+const normalizeOwner = (owner) => {
+  if (!owner) return "Mas Gigih";
+  if (owner === "Pasangan") return "Mba Bela Cintaqu";
+  return owner;
+};
+
 const calculateMetrics = (filteredData) => {
   const totalIncome = filteredData
     .filter((item) => item.type === "income")
@@ -87,7 +93,7 @@ const renderExpenseChart = (filteredData) => {
 };
 
 const getOwnerBadgeClass = (owner) => {
-  if (owner === "Pasangan") return "pill pill-pasangan";
+  if (owner === "Mba Bela Cintaqu") return "pill pill-pasangan";
   if (owner === "Dana Bersama") return "pill pill-bersama";
   return "pill pill-gigih";
 };
@@ -99,7 +105,7 @@ const renderDashboard = () => {
   const filteredTransactions = transactions
     .filter((item) => {
       const matchMonth = !selectedMonth || item.date.startsWith(selectedMonth);
-      const itemOwner = item.owner || "Mas Gigih";
+      const itemOwner = normalizeOwner(item.owner);
       const matchOwner = selectedOwner === "ALL" || itemOwner === selectedOwner;
       return matchMonth && matchOwner;
     })
@@ -119,7 +125,7 @@ const renderDashboard = () => {
   tableBody.innerHTML = "";
   filteredTransactions.forEach((item) => {
     const tr = document.createElement("tr");
-    const itemOwner = item.owner || "Mas Gigih";
+    const itemOwner = normalizeOwner(item.owner);
 
     const tdDate = document.createElement("td");
     tdDate.textContent = item.date;
@@ -205,7 +211,7 @@ document.getElementById("btnExportCsv").addEventListener("click", () => {
   const rows = transactions.map((t) => [
     t.id,
     t.date,
-    `"${t.owner || "Mas Gigih"}"`,
+    `"${normalizeOwner(t.owner)}"`,
     t.type === "income" ? "Pemasukan" : "Pengeluaran",
     `"${t.category}"`,
     `"${t.wallet}"`,
